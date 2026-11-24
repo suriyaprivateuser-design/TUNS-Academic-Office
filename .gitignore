@@ -1,0 +1,41 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# environment — ห้าม commit credentials จริง (ดู .env.example)
+.env
+.env.*
+!.env.example
+
+# local development storage (Demo Data เท่านั้น ไม่ใช่ข้อมูลโรงเรียน)
+.data/
+
+# testing
+coverage/
+test-results/
+playwright-report/
+blob-report/
+tests/e2e/.auth/
+
+# build artifacts
+*.tsbuildinfo
+dist/
+!apps-script/dist/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# logs
+npm-debug.log*
+*.log
+
+# vercel
+.vercel/

@@ -1,0 +1,13 @@
+node_modules
+.next
+.data
+coverage
+test-results
+playwright-report
+package-lock.json
+apps-script/dist
+docs/DATA_DICTIONARY.md
+docs/GOOGLE_SHEETS_SCHEMA.md
+docs/PERMISSIONS.md
+docs/SITEMAP.md
+public
