@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <!-- backdrop blob -->
+  <path d="M40 96C36 58 64 24 108 18C152 12 194 34 202 74C209 110 192 146 154 158C116 170 72 162 52 134C44 123 41 110 40 96Z" fill="#FFD0D0"/>
+
+  <!-- decorative marks -->
+  <g>
+    <circle cx="26" cy="62" r="3.5" fill="#CA8787"/>
+    <circle cx="220" cy="58" r="3" fill="#E1ACAC"/>
+    <circle cx="218" cy="130" r="2.5" fill="#E1ACAC"/>
+    <path d="M24 110C24.8 114 26 115.2 30 116C26 116.8 24.8 118 24 122C23.2 118 22 116.8 18 116C22 115.2 23.2 114 24 110Z" fill="#B47B84"/>
+  </g>
+
+  <!-- upward motion trails -->
+  <path d="M88 148v12M152 151v12" stroke="#CA8787" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="0.01 5.5"/>
+
+  <!-- left document -->
+  <g transform="rotate(-8 90 121)">
+    <rect x="75" y="105" width="30" height="40" rx="4" fill="#E1ACAC"/>
+    <rect x="75" y="101" width="30" height="40" rx="4" fill="#FFFFFF"/>
+    <rect x="80" y="108" width="11" height="3.5" rx="1.75" fill="#CA8787"/>
+    <rect x="80" y="116" width="20" height="3.5" rx="1.75" fill="#DFD3C3"/>
+    <rect x="80" y="123" width="15" height="3.5" rx="1.75" fill="#DFD3C3"/>
+    <rect x="80" y="130" width="20" height="3.5" rx="1.75" fill="#DFD3C3"/>
+  </g>
+
+  <!-- right document -->
+  <g transform="rotate(8 150 125)">
+    <rect x="135" y="109" width="30" height="40" rx="4" fill="#E1ACAC"/>
+    <rect x="135" y="105" width="30" height="40" rx="4" fill="#FFFFFF"/>
+    <rect x="140" y="111" width="20" height="12" rx="3" fill="#FED8B1"/>
+    <rect x="140" y="128" width="20" height="3.5" rx="1.75" fill="#DFD3C3"/>
+    <rect x="140" y="135" width="13" height="3.5" rx="1.75" fill="#DFD3C3"/>
+  </g>
+
+  <!-- cloud -->
+  <g>
+    <path d="M88 96A18 18 0 1 1 92.05 60.47A24 24 0 0 1 139.78 58.81A20 20 0 1 1 150 96Z" fill="#E1ACAC"/>
+    <path d="M88 91A18 18 0 1 1 92.05 55.47A24 24 0 0 1 139.78 53.81A20 20 0 1 1 150 91Z" fill="#FFFFFF"/>
+  </g>
+
+  <!-- upload badge -->
+  <g>
+    <circle cx="120" cy="89" r="15" fill="#942849"/>
+    <path d="M120 96V82M114 88l6-6 6 6" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

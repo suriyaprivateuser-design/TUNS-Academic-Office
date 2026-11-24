@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" fill="none">
+  <!-- backdrop blob -->
+  <path d="M84 285.5C56 232 58 136 104 84C150 32 250 12 340 28C420 42 470 112 472 190C473 228 462 262 446 285.5Z" fill="#FFD0D0"/>
+
+  <!-- floor shadow -->
+  <ellipse cx="268" cy="286" rx="206" ry="6" fill="#E1ACAC"/>
+
+  <!-- wall calendar -->
+  <g>
+    <rect x="146" y="61" width="70" height="74" rx="8" fill="#E1ACAC"/>
+    <rect x="146" y="56" width="70" height="74" rx="8" fill="#FFFFFF"/>
+    <path d="M146 64a8 8 0 0 1 8-8h54a8 8 0 0 1 8 8v12h-70Z" fill="#942849"/>
+    <rect x="163" y="49" width="5" height="13" rx="2.5" fill="#402D20"/>
+    <rect x="194" y="49" width="5" height="13" rx="2.5" fill="#402D20"/>
+    <g fill="#DFD3C3">
+      <rect x="155" y="84" width="10" height="10" rx="2.5"/>
+      <rect x="169" y="84" width="10" height="10" rx="2.5"/>
+      <rect x="183" y="84" width="10" height="10" rx="2.5"/>
+      <rect x="197" y="84" width="10" height="10" rx="2.5"/>
+      <rect x="155" y="98" width="10" height="10" rx="2.5"/>
+      <rect x="169" y="98" width="10" height="10" rx="2.5"/>
+      <rect x="197" y="98" width="10" height="10" rx="2.5"/>
+      <rect x="155" y="112" width="10" height="10" rx="2.5"/>
+      <rect x="169" y="112" width="10" height="10" rx="2.5"/>
+      <rect x="183" y="112" width="10" height="10" rx="2.5"/>
+    </g>
+    <rect x="183" y="98" width="10" height="10" rx="2.5" fill="#CA8787"/>
+  </g>
+
+  <!-- dotted connectors -->
+  <path d="M221 93C233 81 242 78 252 80M266 120C254 123 247 128 244 135" stroke="#B47B84" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="0.01 6.5"/>
+
+  <!-- floating document card with check -->
+  <g transform="rotate(6 282 80)">
+    <rect x="254" y="49" width="56" height="70" rx="7" fill="#E1ACAC"/>
+    <rect x="254" y="44" width="56" height="70" rx="7" fill="#FFFFFF"/>
+    <rect x="263" y="54" width="22" height="4.5" rx="2.25" fill="#CA8787"/>
+    <rect x="263" y="65" width="38" height="4" rx="2" fill="#DFD3C3"/>
+    <rect x="263" y="74" width="32" height="4" rx="2" fill="#DFD3C3"/>
+    <rect x="263" y="83" width="36" height="4" rx="2" fill="#DFD3C3"/>
+    <rect x="263" y="92" width="20" height="4" rx="2" fill="#DFD3C3"/>
+    <circle cx="303" cy="107" r="11" fill="#942849"/>
+    <path d="M298 107.5l3.5 3.5 6.5-7.5" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- potted plant -->
+  <g>
+    <g transform="translate(437 250)">
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(-50)" fill="#CA8787"/>
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(46) scale(0.95)" fill="#CA8787"/>
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(-30) scale(1.25)" fill="#B47B84"/>
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(26) scale(1.35)" fill="#B47B84"/>
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(-9) scale(1.55)" fill="#A87676"/>
+      <path d="M0 0C-9-12-10-34 0-50C10-34 9-12 0 0Z" transform="rotate(9) scale(1.75)" fill="#CA8787"/>
+    </g>
+    <path d="M420 250h34l-3.5 29.5a5 5 0 0 1-5 4.5h-17a5 5 0 0 1-5-4.5Z" fill="#8D493A"/>
+    <rect x="417" y="245" width="40" height="8" rx="3.5" fill="#642517"/>
+  </g>
+
+  <!-- desk -->
+  <g>
+    <rect x="118" y="198" width="7" height="87" fill="#6F4E37"/>
+    <rect x="312.5" y="198" width="7" height="87" fill="#6F4E37"/>
+    <rect x="100" y="190" width="244" height="8" rx="4" fill="#A67B5B"/>
+  </g>
+
+  <!-- stack of folders and a mug -->
+  <g>
+    <rect x="122" y="180" width="84" height="10" rx="3" fill="#8D493A"/>
+    <rect x="127" y="176.5" width="74" height="3.5" fill="#FFFFFF"/>
+    <rect x="128" y="166.5" width="80" height="10" rx="3" fill="#ECB176"/>
+    <rect x="131" y="163" width="70" height="3.5" fill="#FFFFFF"/>
+    <rect x="124" y="153" width="78" height="10" rx="3" fill="#CA8787"/>
+    <rect x="130" y="183" width="16" height="4" rx="2" fill="#ECB176"/>
+    <rect x="184" y="169.5" width="16" height="4" rx="2" fill="#FFFFFF"/>
+    <rect x="132" y="156" width="16" height="4" rx="2" fill="#FFE7E7"/>
+    <path d="M218 179.5h-3a3.5 3.5 0 0 0 0 7h3" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M217 175h14v11a4 4 0 0 1-4 4h-6a4 4 0 0 1-4-4Z" fill="#FFFFFF"/>
+  </g>
+
+  <!-- laptop -->
+  <g fill="#402D20">
+    <rect x="251.5" y="136" width="5" height="52" rx="2.5" transform="rotate(-16 254 188)"/>
+    <rect x="250" y="184" width="54" height="6" rx="3"/>
+  </g>
+
+  <!-- office chair -->
+  <g>
+    <rect x="397" y="142" width="11" height="64" rx="5.5" transform="rotate(6 402 206)" fill="#CA8787"/>
+    <rect x="391" y="200" width="5" height="34" rx="2.5" transform="rotate(18 393.5 232)" fill="#A87676"/>
+    <rect x="364" y="236" width="6" height="36" fill="#A87676"/>
+    <rect x="340" y="270" width="54" height="6" rx="3" fill="#A87676"/>
+    <circle cx="345" cy="280.5" r="4" fill="#6F4E37"/>
+    <circle cx="389" cy="280.5" r="4" fill="#6F4E37"/>
+    <rect x="338" y="226" width="60" height="10" rx="5" fill="#CA8787"/>
+  </g>
+
+  <!-- teacher -->
+  <g>
+    <!-- neck -->
+    <rect x="354" y="134" width="10" height="18" rx="4" fill="#ECB176"/>
+    <!-- torso -->
+    <rect x="350" y="144" width="34" height="78" rx="15" transform="rotate(-4 367 222)" fill="#942849"/>
+    <!-- hair bun, head, hair -->
+    <circle cx="373" cy="109" r="7.5" fill="#402D20"/>
+    <circle cx="357" cy="123" r="15" fill="#FED8B1"/>
+    <path d="M343.55 114.53A16.5 16.5 0 1 1 366.75 135.79C363 131 364 120 356 116.5C351 114.5 347 114 343.55 114.53Z" fill="#402D20"/>
+    <!-- far shoe -->
+    <path d="M287 285c0-5.5 4.5-10 10-10h17v10Z" fill="#402D20"/>
+    <!-- near leg -->
+    <path d="M309.5 218h13.5l-1.5 58h-10Z" fill="#FED8B1"/>
+    <path d="M296 285c0-5.5 4.5-10 10-10h16a4 4 0 0 1 4 4v6Z" fill="#642517"/>
+    <!-- skirt -->
+    <path d="M374 205.5H314a8 8 0 0 0-8 8v8a5 5 0 0 0 5 5h63a10.5 10.5 0 0 0 0-21Z" fill="#402D20"/>
+    <!-- arm -->
+    <rect x="-6.5" y="-6.5" width="13" height="50" rx="6.5" transform="translate(361 156) rotate(42.8)" fill="#942849"/>
+    <rect x="-5.5" y="-5.5" width="11" height="46" rx="5.5" transform="translate(336 183) rotate(91.5)" fill="#942849"/>
+    <circle cx="293" cy="182" r="5.5" fill="#FED8B1"/>
+  </g>
+</svg>

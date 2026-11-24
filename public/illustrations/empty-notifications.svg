@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <!-- backdrop blob -->
+  <path d="M42 94C38 58 66 26 108 20C150 14 190 34 198 72C205 106 190 142 154 155C118 168 76 160 56 134C48 123 44 109 42 94Z" fill="#FFD0D0"/>
+
+  <!-- decorative marks -->
+  <g>
+    <circle cx="28" cy="58" r="3.5" fill="#CA8787"/>
+    <circle cx="216" cy="120" r="3" fill="#E1ACAC"/>
+    <circle cx="24" cy="118" r="2.5" fill="#E1ACAC"/>
+    <path d="M212 34C212.8 38 214 39.2 218 40C214 40.8 212.8 42 212 46C211.2 42 210 40.8 206 40C210 39.2 211.2 38 212 34Z" fill="#B47B84"/>
+    <path d="M68 82c-3 7-3 15 0 22M172 82c3 7 3 15 0 22" stroke="#CA8787" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- ground shadow -->
+  <ellipse cx="120" cy="157" rx="44" ry="4.5" fill="#E1ACAC"/>
+
+  <!-- bell -->
+  <g>
+    <circle cx="120" cy="138" r="8.5" fill="#8D493A"/>
+    <rect x="114.5" y="36" width="11" height="14" rx="5.5" fill="#A67B5B"/>
+    <path d="M120 44C102 44 92 58 92 78C92 100 88 114 80 126H160C152 114 148 100 148 78C148 58 138 44 120 44Z" fill="#ECB176"/>
+    <path d="M107 57.5C100 63 97.5 71 97.5 80V94a3 3 0 0 0 6 0V80C103.5 72.5 105.5 66.5 110.5 62A3 3 0 0 0 107 57.5Z" fill="#FED8B1"/>
+    <rect x="74" y="121" width="92" height="11" rx="5.5" fill="#A67B5B"/>
+  </g>
+</svg>

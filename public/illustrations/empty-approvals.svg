@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" fill="none">
+  <!-- backdrop blob -->
+  <path d="M38 92C38 52 72 20 116 18C158 16 196 40 200 80C203 114 184 148 148 157C110 166 68 158 50 130C42 118 38 106 38 92Z" fill="#FFD0D0"/>
+
+  <!-- decorative marks -->
+  <g>
+    <circle cx="214" cy="58" r="3.5" fill="#CA8787"/>
+    <circle cx="22" cy="72" r="3" fill="#E1ACAC"/>
+    <circle cx="218" cy="126" r="2.5" fill="#E1ACAC"/>
+    <path d="M30 28C30.8 32 32 33.2 36 34C32 34.8 30.8 36 30 40C29.2 36 28 34.8 24 34C28 33.2 29.2 32 30 28Z" fill="#B47B84"/>
+  </g>
+
+  <!-- ground shadow -->
+  <ellipse cx="120" cy="158" rx="72" ry="5" fill="#E1ACAC"/>
+
+  <!-- tray interior -->
+  <path d="M80 100H160a6 6 0 0 1 4.9 2.5L184 128H56L75.1 102.5A6 6 0 0 1 80 100Z" fill="#642517"/>
+
+  <!-- back sheet -->
+  <g transform="rotate(6 122 132)">
+    <rect x="92" y="46" width="64" height="92" rx="6" fill="#F8EDE3"/>
+    <rect x="124" y="58" width="22" height="4" rx="2" fill="#D0B8A8"/>
+  </g>
+
+  <!-- approved document -->
+  <g transform="rotate(-4 120 132)">
+    <rect x="86" y="36" width="68" height="102" rx="6" fill="#FFFFFF"/>
+    <rect x="96" y="47" width="24" height="4.5" rx="2.25" fill="#CA8787"/>
+    <circle cx="120" cy="77" r="14" fill="#942849"/>
+    <path d="M113.5 77.5l4.5 4.5 8.5-9.5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="100" y="101" width="40" height="4" rx="2" fill="#DFD3C3"/>
+    <rect x="106" y="111" width="28" height="4" rx="2" fill="#DFD3C3"/>
+  </g>
+
+  <!-- tray front with notch -->
+  <path d="M56 126H93a4 4 0 0 1 3.8 2.8C98.4 134 103 138 109 138H131C137 138 141.6 134 143.2 128.8A4 4 0 0 1 147 126H184V146a8 8 0 0 1-8 8H64a8 8 0 0 1-8-8Z" fill="#8D493A"/>
+</svg>
