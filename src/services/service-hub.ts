@@ -7,8 +7,7 @@
  * - ผู้ดูแลเพิ่ม/แก้ไข/จัดเรียงลิงก์ได้โดยไม่แก้โค้ด ทุกการแก้ไขบันทึก Audit Log
  */
 import 'server-only';
-import { z } from 'zod';
-import { ICON_KEYS, type IconKey } from '@/config/icons';
+import type { IconKey } from '@/config/icons';
 import type { LinkCheckResult, ServiceStatus } from '@/config/reference';
 import { ROLE_IDS } from '@/config/roles';
 import { safeInternalPath } from '@/config/routes';
@@ -25,6 +24,7 @@ import {
   ServiceRoleAccess,
 } from '@/schemas/database/service-hub';
 import type { RowOf } from '@/schemas/database/types';
+import { serviceInputSchema, type ServiceInput } from '@/schemas/forms/service';
 import type { CurrentUser } from './identity';
 
 type ServiceRow = RowOf<typeof AcademicServices>;
@@ -94,6 +94,7 @@ async function loadVisible(db: Db, user: CurrentUser) {
   const roleIds = new Set(user.roles.map((role) => role.roleId as string));
   const allowed = new Map<string, Set<string>>();
   for (const access of roleAccess) {
+    if (!access.is_active) continue;
     const set = allowed.get(access.service_id) ?? new Set<string>();
     set.add(access.role_id);
     allowed.set(access.service_id, set);
@@ -244,33 +245,13 @@ export async function openService(
 
 // ── การจัดการลิงก์ (ข้อ 09.2) ──────────────────────────────────────────────────
 
-const COLORS = ['terracotta', 'rose', 'burgundy', 'brown', 'sand'] as const;
-
-export const serviceInputSchema = z.object({
-  categoryId: z.string().min(1, 'กรุณาเลือกหมวดหมู่').max(64),
-  nameTh: z.string().trim().min(2, 'กรุณาระบุชื่อระบบ').max(120),
-  nameEn: z.string().trim().max(120),
-  description: z.string().trim().max(300),
-  ownerUnit: z.string().trim().max(120),
-  linkType: z.enum(['external', 'internal']),
-  url: z.string().trim().max(2000),
-  internalPath: z.string().trim().max(200),
-  icon: z.string().refine((value) => (ICON_KEYS as string[]).includes(value), 'ไอคอนไม่ถูกต้อง'),
-  color: z.enum(COLORS),
-  status: z.enum(['active', 'maintenance', 'offline']),
-  isVisible: z.boolean(),
-  isPinned: z.boolean(),
-  audience: z.enum(['all', 'restricted']),
-  roleIds: z.array(z.enum(ROLE_IDS)).max(ROLE_IDS.length),
-});
-
-export type ServiceInput = z.infer<typeof serviceInputSchema>;
-
 export interface ManagedService extends ServiceInput {
   id: string;
   version: number;
   sortOrder: number;
   configured: boolean;
+  /** ปลายทางที่ผ่านการตรวจแล้ว สำหรับปุ่ม “เปิดลิงก์” ของผู้ดูแล (null = ยังไม่ตั้งค่า หรือค่าในชีตไม่ผ่านการตรวจ) */
+  openHref: string | null;
   isPrivateHost: boolean;
   lastCheckResult: LinkCheckResult | null;
   lastCheckedAt: string | null;
@@ -352,11 +333,17 @@ export async function listManagedServices(
           isPinned: row.is_pinned,
           audience: row.audience,
           roleIds: roleAccess
-            .filter((access) => access.service_id === row.id)
+            .filter((access) => access.service_id === row.id && access.is_active)
             .map((access) => access.role_id)
             .filter((id): id is (typeof ROLE_IDS)[number] => (ROLE_IDS as readonly string[]).includes(id)),
           sortOrder: row.sort_order,
           configured: isConfigured(row),
+          openHref:
+            row.link_type === 'internal'
+              ? safeInternalPath(row.internal_path, '') || null
+              : checked?.ok
+                ? checked.url
+                : null,
           isPrivateHost: checked?.ok ? checked.isPrivateHost : false,
           lastCheckResult: row.last_check_result,
           lastCheckedAt: row.last_checked_at,
@@ -420,13 +407,19 @@ export async function saveService(
     uow.add(created);
   }
 
-  // สิทธิ์รายบทบาท: เพิ่มที่ขาด และปิดที่ไม่ใช้ (ไม่มีการลบแถว)
+  // สิทธิ์รายบทบาท: เพิ่มที่ขาด เปิดใช้แถวเดิมที่เคยถอน และถอนสิทธิ์ที่ไม่อยู่ในรายการแล้ว (ไม่มีการลบแถว)
   const accessRepo = db.repo(ServiceRoleAccess);
   const current = await accessRepo.filter((access) => access.service_id === id);
   const wanted = new Set<string>(data.audience === 'restricted' ? data.roleIds : []);
+  for (const access of current) {
+    const shouldBeActive = wanted.has(access.role_id);
+    if (access.is_active !== shouldBeActive) {
+      uow.add(accessRepo.update(access.id, { is_active: shouldBeActive }, access.version));
+    }
+  }
   for (const roleId of wanted) {
     if (!current.some((access) => access.role_id === roleId)) {
-      uow.add(accessRepo.insert({ id: `${id}:${roleId}`, service_id: id, role_id: roleId }));
+      uow.add(accessRepo.insert({ id: `${id}:${roleId}`, service_id: id, role_id: roleId, is_active: true }));
     }
   }
   uow.audit({
@@ -436,7 +429,12 @@ export async function saveService(
     entityType: 'service',
     entityId: id,
     summary: `${target ? 'แก้ไข' : 'เพิ่ม'}บริการ “${data.nameTh}”`,
-    metadata: { linkType: data.linkType, configured: Boolean(values.url ?? values.internal_path) },
+    metadata: {
+      linkType: data.linkType,
+      configured: Boolean(values.url ?? values.internal_path),
+      audience: data.audience,
+      roleIds: Array.from(wanted),
+    },
   });
   await uow.commit();
   return { id };
@@ -552,11 +550,26 @@ export interface ServiceUsageStats {
   needsReview: number;
   totalOpens: number;
   topServices: { id: string; name: string; opens: number }[];
-  /** จำนวนครั้งที่เปิดลิงก์รายเดือน (YYYY-MM ตามเวลาโรงเรียน) */
+  /**
+   * จำนวนครั้งที่เปิดลิงก์รายเดือน (YYYY-MM ตามเวลาโรงเรียน) ต่อเนื่องทุกเดือนตั้งแต่เดือนแรกที่มีข้อมูล
+   * ถึงเดือนปัจจุบัน ย้อนหลังไม่เกิน 12 เดือน — เดือนที่ไม่มีการเปิดลิงก์เป็น 0 ไม่ถูกตัดออก
+   */
   monthly: { month: string; opens: number }[];
 }
 
-export async function getUsageStats(db: Db, user: CurrentUser): Promise<ServiceUsageStats> {
+/** เลื่อนเป็นเวลาไทย (UTC+7) ก่อนตัดเดือน */
+const schoolMonth = (ms: number) => new Date(ms + 7 * 3600_000).toISOString().slice(0, 7);
+
+function previousMonth(month: string): string {
+  const [year, monthNo] = month.split('-').map(Number) as [number, number];
+  return new Date(Date.UTC(year, monthNo - 2, 1)).toISOString().slice(0, 7);
+}
+
+export async function getUsageStats(
+  db: Db,
+  user: CurrentUser,
+  now: number = Date.now(),
+): Promise<ServiceUsageStats> {
   if (!user.permissions.canAll('services.insights', 'view')) throw forbidden();
   const [services, logs] = await Promise.all([
     db.repo(AcademicServices).filter((row) => !row.archived_at),
@@ -566,10 +579,13 @@ export async function getUsageStats(db: Db, user: CurrentUser): Promise<ServiceU
   const monthly = new Map<string, number>();
   for (const log of logs) {
     counts.set(log.service_id, (counts.get(log.service_id) ?? 0) + 1);
-    // เลื่อนเป็นเวลาไทย (UTC+7) ก่อนตัดเดือน
-    const month = new Date(Date.parse(log.created_at) + 7 * 3600_000).toISOString().slice(0, 7);
+    const month = schoolMonth(Date.parse(log.created_at));
     monthly.set(month, (monthly.get(month) ?? 0) + 1);
   }
+  const window: string[] = [];
+  for (let month = schoolMonth(now); window.length < 12; month = previousMonth(month)) window.unshift(month);
+  const firstMonth = Array.from(monthly.keys()).sort()[0];
+  const months = firstMonth ? window.filter((month) => month >= firstMonth) : [];
   const nameById = new Map(services.map((row) => [row.id, row.name_th]));
   return {
     total: services.length,
@@ -585,9 +601,6 @@ export async function getUsageStats(db: Db, user: CurrentUser): Promise<ServiceU
       .sort((a, b) => b[1] - a[1])
       .slice(0, 8)
       .map(([id, opens]) => ({ id, name: nameById.get(id) ?? '', opens })),
-    monthly: Array.from(monthly.entries())
-      .sort((a, b) => a[0].localeCompare(b[0]))
-      .slice(-12)
-      .map(([month, opens]) => ({ month, opens })),
+    monthly: months.map((month) => ({ month, opens: monthly.get(month) ?? 0 })),
   };
 }

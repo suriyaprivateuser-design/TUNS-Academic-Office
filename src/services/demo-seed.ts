@@ -29,6 +29,7 @@ import {
 } from '@/schemas/database/master';
 import { CalendarEvents } from '@/schemas/database/meeting';
 import { ApprovalRequests } from '@/schemas/database/document';
+import { ServiceAccessLogs, ServiceFavorites } from '@/schemas/database/service-hub';
 import { EMPTY_CLASS_LEAVE_DRAFT, type ClassLeaveDraftInput } from '@/schemas/forms/class-leave';
 import { createDraft, decideClassLeave, submitRequest } from './class-leave';
 import { loadCurrentUser, type CurrentUser } from './identity';
@@ -451,6 +452,61 @@ async function seedClassLeaveSamples(db: Db): Promise<void> {
   await submitRequest(db, mathTeacher, math.id, 1);
 }
 
+/**
+ * ประวัติการเปิดลิงก์ (สาธิต) ย้อนหลังราว 4 เดือน และรายการโปรดของบัญชีสาธิต
+ * - จำนวนกำหนดตายตัว ไม่สุ่ม ผลจึงเหมือนเดิมทุกครั้งที่สร้างฐานข้อมูลใหม่
+ * - ใช้เฉพาะบริการที่เปิดได้จริงในชุดตั้งต้น (หน้าภายในระบบและเครื่องมือ Google) ไม่มีการสร้าง URL ของโรงเรียน
+ */
+async function seedServiceUsageSamples(db: Db): Promise<void> {
+  const services = [
+    'svc-class-leave',
+    'svc-library',
+    'svc-google-drive',
+    'svc-approvals',
+    'svc-google-classroom',
+    'svc-google-calendar',
+    'svc-google-forms',
+  ];
+  const personas = ['teacher-sci', 'staff', 'teacher-mat', 'head-sci', 'academic-head'];
+  const sources = ['hub', 'workspace', 'launcher', 'search'] as const;
+  const logs = db.repo(ServiceAccessLogs);
+  const WEEKS = 18;
+  for (let week = WEEKS - 1; week >= 0; week -= 1) {
+    // สัปดาห์ล่าสุดมาก่อนเวลาปัจจุบัน 2 ชั่วโมง เพื่อไม่ให้มีรายการในอนาคต
+    const at = new Date(Date.now() - (week * 7 * 24 + 2) * 3600_000);
+    const uow = db.unitOfWork({ action: 'demo.seedServiceUsage', actorId: null }, at);
+    services.forEach((serviceId, serviceIndex) => {
+      personas.forEach((persona, personaIndex) => {
+        // ระบบแรก ๆ ถูกเปิดบ่อยกว่า และการใช้งานค่อย ๆ เพิ่มขึ้นเมื่อเข้าใกล้ปัจจุบัน
+        const weight = (WEEKS - week + personaIndex * 2 + serviceIndex * 5) % (serviceIndex + 3);
+        const times = weight === 0 ? (week < 9 ? 2 : 1) : 0;
+        for (let count = 0; count < times; count += 1) {
+          uow.add(
+            logs.insert({
+              service_id: serviceId,
+              user_id: demoUserId(persona),
+              source: sources[(serviceIndex + personaIndex + count) % sources.length] ?? 'hub',
+            }),
+          );
+        }
+      });
+    });
+    if (uow.size > 0) await uow.commit();
+  }
+
+  const favorites = db.repo(ServiceFavorites);
+  const uow = db.unitOfWork({ action: 'demo.seedServiceFavorites', actorId: null });
+  for (const [persona, serviceId] of [
+    ['teacher-sci', 'svc-class-leave'],
+    ['teacher-sci', 'svc-google-classroom'],
+    ['staff', 'svc-library'],
+    ['staff', 'svc-google-drive'],
+  ] as const) {
+    uow.add(favorites.insert({ user_id: demoUserId(persona), service_id: serviceId, is_active: true }));
+  }
+  await uow.commit();
+}
+
 /** เติมข้อมูลสาธิตเมื่อฐานข้อมูล local ยังว่าง — ไม่ทำงานกับ Google Sheets ไม่ว่ากรณีใด */
 export async function seedDemoDataIfEmpty(): Promise<boolean> {
   if (getDataDriver() !== 'local') return false;
@@ -460,6 +516,7 @@ export async function seedDemoDataIfEmpty(): Promise<boolean> {
   await provisionReferenceData(db, null);
   await seedMasterData(db);
   await seedClassLeaveSamples(db);
+  await seedServiceUsageSamples(db);
   return true;
 }
 
@@ -467,5 +524,8 @@ export async function seedDemoDataIfEmpty(): Promise<boolean> {
 export async function seedDemoData(db: Db, options: { samples?: boolean } = {}): Promise<void> {
   await provisionReferenceData(db, null);
   await seedMasterData(db);
-  if (options.samples !== false) await seedClassLeaveSamples(db);
+  if (options.samples !== false) {
+    await seedClassLeaveSamples(db);
+    await seedServiceUsageSamples(db);
+  }
 }

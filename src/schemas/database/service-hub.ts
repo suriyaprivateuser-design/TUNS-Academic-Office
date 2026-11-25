@@ -81,6 +81,7 @@ export const ServiceRoleAccess = defineTable(
     ...base,
     service_id: req.string('บริการ', { ref: 'serviceHub.AcademicServices' }),
     role_id: req.string('บทบาทที่ได้รับอนุญาต', { ref: 'master.Roles' }),
+    is_active: req.boolean('true = บทบาทนี้ยังมีสิทธิ์ (ถอนสิทธิ์แล้วเป็น false ไม่ลบแถว)'),
   },
   { uniqueKeys: [['service_id', 'role_id']], phase: 1 },
 );

@@ -58,11 +58,17 @@
   --muted-foreground: var(--palette-coffee);
   --ring: var(--palette-burgundy);
 
+  /*
+   * สีกราฟ — ลำดับตายตัว ห้ามสลับ (ตรวจด้วยตัวตรวจ palette: คู่ที่อยู่ติดกันทุกคู่ ΔE ≥ 16 ทั้งสายตาปกติและตาบอดสี)
+   * camel (#A67B5B) กับ rose (#CA8787) แยกจากกันไม่ออก (ΔE 9) จึงห้ามอยู่ติดกัน
+   * ชุดสีเอิร์ธโทนมีความสดต่ำโดยเจตนา: ซีรีส์ตั้งแต่ 2 ชุดขึ้นไปต้องมี legend + ป้ายกำกับ + มุมมองตารางเสมอ
+   * rose มี contrast กับพื้นขาว 2.9:1 จึงต้องมีตัวเลขกำกับหรือมุมมองตารางคู่กัน
+   */
   --chart-1: var(--palette-terracotta);
   --chart-2: var(--palette-rose);
-  --chart-3: var(--palette-camel);
-  --chart-4: var(--palette-burgundy);
-  --chart-5: var(--palette-taupe);
+  --chart-3: var(--palette-coffee);
+  --chart-4: var(--palette-camel);
+  --chart-5: var(--palette-burgundy);
 
   /* ── สีสถานะ (ใช้คู่กับไอคอนและข้อความเสมอ ไม่ใช้สีอย่างเดียวสื่อความหมาย) ── */
   --success: #3f6b4f;
