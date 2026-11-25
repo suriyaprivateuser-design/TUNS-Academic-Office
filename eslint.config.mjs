@@ -21,11 +21,13 @@ const eslintConfig = defineConfig([
     // กันไม่ให้ Client Component ดึงโมดูลฝั่ง Server (credentials, storage, services) เข้า bundle
     files: ['src/components/**/*.{ts,tsx}', 'src/hooks/**/*.{ts,tsx}'],
     rules: {
-      'no-restricted-imports': [
+      // import เฉพาะ "ชนิดข้อมูล" ทำได้ (ถูกลบตอน build) แต่ห้าม import โค้ดที่ทำงานจริง
+      '@typescript-eslint/no-restricted-imports': [
         'error',
         {
           patterns: [
             {
+              allowTypeImports: true,
               group: [
                 '@/lib/env',
                 '@/lib/google/*',

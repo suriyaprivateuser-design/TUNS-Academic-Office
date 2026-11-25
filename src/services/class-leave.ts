@@ -1151,3 +1151,50 @@ export async function listTodayActivities(
   }
   return result;
 }
+
+export interface NoticeItem {
+  requestId: string;
+  referenceNo: string;
+  activityName: string;
+  activityTypeLabel: string;
+  startDate: string | null;
+  endDate: string | null;
+  location: string | null;
+  relation: 'subject_teacher' | 'advisor';
+  acknowledgedAt: string | null;
+}
+
+/** หนังสือขอเวลาเรียนที่อนุมัติแล้วและแจ้งมายังผู้ใช้ (ข้อ 13 / 03.3) */
+export async function listNotices(db: Db, user: CurrentUser): Promise<NoticeItem[]> {
+  user.permissions.assertCan('classLeave.notices', 'view');
+  const [recipients, acknowledgements, requests] = await Promise.all([
+    db.repo(ClassLeaveRecipients).filter((r) => r.user_id === user.id),
+    db.repo(ClassLeaveAcknowledgements).filter((a) => a.user_id === user.id),
+    db.repo(ClassLeaveRequests).all(),
+  ]);
+  const requestById = new Map(requests.map((r) => [r.id, r]));
+  const items: NoticeItem[] = [];
+  for (const recipient of recipients) {
+    const request = requestById.get(recipient.request_id);
+    // แสดงเฉพาะเวอร์ชันปัจจุบันที่ยังอนุมัติอยู่ (คำร้องที่ถูกเปิดแก้ไขจะหายจากรายการจนกว่าจะอนุมัติใหม่)
+    if (!request || request.status !== 'approved' || recipient.request_version !== request.request_version) {
+      continue;
+    }
+    if (items.some((item) => item.requestId === request.id)) continue;
+    const acknowledgement = acknowledgements.find(
+      (a) => a.request_id === request.id && a.request_version === request.request_version,
+    );
+    items.push({
+      requestId: request.id,
+      referenceNo: request.reference_no,
+      activityName: request.activity_name,
+      activityTypeLabel: activityTypeLabel(request.activity_type),
+      startDate: request.start_date,
+      endDate: request.end_date,
+      location: request.location,
+      relation: recipient.recipient_role,
+      acknowledgedAt: acknowledgement?.acknowledged_at ?? null,
+    });
+  }
+  return items.sort((a, b) => (b.startDate ?? '').localeCompare(a.startDate ?? ''));
+}

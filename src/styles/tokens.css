@@ -1,0 +1,87 @@
+/**
+ * Design Tokens — TUNS Academic Office
+ *
+ * จุดเดียวที่กำหนดสี ระยะ และเงาของทั้งระบบ (ข้อ 06.4) ทุก component อ้างอิงผ่านตัวแปรเหล่านี้เท่านั้น
+ * สีทั้งหมดมาจาก Official Color Palette (ข้อ 06.3) ยกเว้นสีสถานะ 4 ชุด (สำเร็จ/เตือน/ผิดพลาด/ข้อมูล)
+ * ที่ข้อ 06.4 ให้กำหนดเพิ่มเพื่อแยกสถานะได้ชัดเจน
+ *
+ * อัตราส่วน contrast ที่ตรวจแล้ว (WCAG AA ≥ 4.5:1 สำหรับข้อความปกติ):
+ *   text-primary  #402D20 บน background #F8EDE3 ... 11.6:1     บน surface #FFFFFF ... 13.3:1
+ *   text-secondary #6F4E37 บน background ........... 6.5:1     บน surface ........... 7.5:1
+ *   accent #942849 บน accent-soft #FFE7E7 ........... 6.8:1     ขาว บน accent ......... 8.0:1
+ *   ขาว บน primary #642517 ......................... 12.0:1     ขาว บน primary-hover #8D493A ... 6.7:1
+ *   border-strong #A67B5B บน surface ................ 3.7:1 (ขอบของช่องกรอก ต้อง ≥ 3:1)
+ * #A67B5B และ #CA8787 ใช้กับไอคอนและการตกแต่งเท่านั้น ไม่ใช้เป็นสีข้อความเนื้อหา
+ */
+:root {
+  /* ── Official palette ───────────────────────────────────────────── */
+  --palette-cream: #f8ede3;
+  --palette-sand: #dfd3c3;
+  --palette-taupe: #d0b8a8;
+  --palette-terracotta: #8d493a;
+  --palette-burnt: #642517;
+  --palette-peach: #fed8b1;
+  --palette-ochre: #ecb176;
+  --palette-camel: #a67b5b;
+  --palette-coffee: #6f4e37;
+  --palette-espresso: #402d20;
+  --palette-blush: #ffd0d0;
+  --palette-rose-muted: #e1acac;
+  --palette-rose: #ca8787;
+  --palette-rosewood: #a87676;
+  --palette-brick-rose: #9f5e5e;
+  --palette-petal: #ffe7e7;
+  --palette-mauve: #caa6a6;
+  --palette-dusty-plum: #b47b84;
+  --palette-plum: #944e63;
+  --palette-burgundy: #942849;
+
+  /* ── Semantic tokens (ข้อ 06.4) ─────────────────────────────────── */
+  --background: var(--palette-cream);
+  --surface: #ffffff;
+  --surface-muted: var(--palette-sand);
+  /* พื้นอ่อนสำหรับ hover / แถบหัวตาราง: ผสมครีมกับขาว */
+  --surface-subtle: color-mix(in srgb, var(--palette-cream) 55%, #ffffff);
+  --primary: var(--palette-burnt);
+  --primary-hover: var(--palette-terracotta);
+  --primary-foreground: #ffffff;
+  --secondary: var(--palette-camel);
+  --accent: var(--palette-burgundy);
+  --accent-soft: var(--palette-petal);
+  --accent-foreground: #ffffff;
+  --rose: var(--palette-rose);
+  --rose-muted: var(--palette-rose-muted);
+  --rose-soft: var(--palette-blush);
+  --border: var(--palette-sand);
+  --border-strong: var(--palette-camel);
+  --foreground: var(--palette-espresso);
+  --muted-foreground: var(--palette-coffee);
+  --ring: var(--palette-burgundy);
+
+  --chart-1: var(--palette-terracotta);
+  --chart-2: var(--palette-rose);
+  --chart-3: var(--palette-camel);
+  --chart-4: var(--palette-burgundy);
+  --chart-5: var(--palette-taupe);
+
+  /* ── สีสถานะ (ใช้คู่กับไอคอนและข้อความเสมอ ไม่ใช้สีอย่างเดียวสื่อความหมาย) ── */
+  --success: #3f6b4f;
+  --success-soft: #e6f0e8;
+  --warning: #8a5a00;
+  --warning-soft: #fff1d6;
+  --danger: #a32b2b;
+  --danger-soft: #fde8e6;
+  --info: #2f5d7c;
+  --info-soft: #e4eef5;
+
+  /* ── เงา (นุ่ม โทนน้ำตาล ไม่ใช้เงาดำเข้ม) ───────────────────────── */
+  --shadow-color: 64 45 32;
+  --shadow-card: 0 1px 2px rgb(var(--shadow-color) / 0.04), 0 6px 20px -8px rgb(var(--shadow-color) / 0.1);
+  --shadow-raised: 0 2px 6px -1px rgb(var(--shadow-color) / 0.08), 0 18px 44px -12px rgb(var(--shadow-color) / 0.2);
+  --shadow-control: 0 1px 2px rgb(var(--shadow-color) / 0.08);
+
+  /* ── ขนาดโครงหน้า (ข้อ 08.1) ─────────────────────────────────────── */
+  --sidebar-width: 15.5rem;
+  --sidebar-collapsed-width: 4.5rem;
+  --topbar-height: 4.25rem;
+}

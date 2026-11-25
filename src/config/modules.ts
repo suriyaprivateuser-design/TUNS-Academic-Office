@@ -174,9 +174,9 @@ export const SUBSYSTEMS = [
     path: '/workspace',
     icon: 'home',
     phase: 1,
-    status: 'not_started',
-    released: false,
-    note: '',
+    status: 'implemented',
+    released: true,
+    note: 'ทุกส่วนดึงข้อมูลจริงจากที่เก็บข้อมูล: บริการใช้บ่อย งานที่ต้องทำ เอกสารของฉัน ปฏิทิน กิจกรรมนักเรียนวันนี้ การแจ้งเตือน',
   },
   {
     id: '01.3',
